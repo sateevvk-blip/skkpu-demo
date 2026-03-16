@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ГИС СККПУ - Демонстрация v3.0 | МИНОБР</title>
+    <title>ГИС СККПУ - Демонстрация v3.0 | ЦРЦТ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -706,179 +706,284 @@
         }
     
         /* ========================================
-           MOBILE: iPhone 16/17 Pro (≤430px)
+           MOBILE: iPhone (≤430px) — Full Redesign
         ======================================== */
         @media (max-width: 430px) {
 
-            /* Dynamic Island / Notch safe area */
+            /* ── Safe area & base ── */
             .header-compact {
-                padding-left: 16px;
-                padding-right: 16px;
-                padding-top: max(16px, env(safe-area-inset-top));
+                padding: max(14px, env(safe-area-inset-top)) 16px 14px;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
             }
+            body { padding-bottom: env(safe-area-inset-bottom); }
 
-            body {
-                padding-bottom: env(safe-area-inset-bottom);
-            }
+            /* ── Logo ── */
+            .logo-img { width: 32px; height: 32px; }
+            .logo-title { font-size: 13px; }
+            .logo-subtitle { font-size: 10px; display: none; }
 
-            /* Navigation */
-            .header-nav {
-                gap: 6px;
-                flex-wrap: nowrap;
-            }
+            /* ── Navigation ── */
+            .header-nav { gap: 6px; }
             .nav-btn {
-                padding: 7px 12px;
+                padding: 6px 12px;
                 font-size: 11px;
+                border-width: 1.5px;
                 white-space: nowrap;
             }
 
-            /* Hero */
-            .hero-compact {
-                padding: 28px 16px 20px;
-            }
-            .hero-title {
-                font-size: 1.35em;
-                line-height: 1.2;
-            }
-            .hero-subtitle {
-                font-size: 0.88em;
-            }
+            /* ── Hero ── */
+            .hero-compact { padding: 20px 16px 16px; }
+            .hero-title { font-size: 1.25em; line-height: 1.2; margin-bottom: 6px; }
+            .hero-subtitle { font-size: 0.82em; line-height: 1.4; }
 
-            /* Containers */
-            .container,
-            .container-wide {
-                padding: 20px 14px;
-            }
+            /* ── Containers ── */
+            .container, .container-wide { padding: 16px 14px; }
 
-            /* Controls panel */
+            /* ── Controls ── */
             .controls-compact {
                 padding: 14px;
                 flex-direction: column;
                 gap: 10px;
                 border-radius: 14px;
-                margin-bottom: 20px;
+                margin-bottom: 18px;
             }
-            .controls-group {
-                flex-direction: column;
-                gap: 8px;
-            }
-            .btn-primary,
-            .btn-secondary {
+            .controls-group { flex-direction: column; gap: 8px; }
+            .btn-primary, .btn-secondary, .btn-coral {
                 width: 100%;
                 text-align: center;
-                padding: 12px 14px;
-                font-size: 14px;
+                padding: 11px 14px;
+                font-size: 13px;
                 box-sizing: border-box;
+                border-radius: 12px;
             }
             .data-source {
                 margin-left: 0;
                 font-size: 11px;
                 text-align: center;
+                padding: 8px 10px;
             }
 
-            /* Stats — 2 columns */
+            /* ── Stats grid: 2 columns ── */
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
-                margin-bottom: 20px;
+                margin-bottom: 18px;
             }
-            .stat-card {
-                padding: 18px 10px;
-                border-radius: 14px;
-            }
-            .stat-value {
-                font-size: 1.7em;
-            }
-            .stat-label {
-                font-size: 10px;
-            }
-            .stat-icon {
-                font-size: 1.3em;
-                margin-bottom: 6px;
-            }
+            .stat-card { padding: 16px 10px; border-radius: 14px; }
+            .stat-value { font-size: 1.6em; }
+            .stat-label { font-size: 10px; line-height: 1.3; margin-top: 4px; }
+            .stat-icon { font-size: 1.2em; margin-bottom: 4px; }
 
-            /* Section titles */
+            /* ── Section titles ── */
             .section-title {
-                font-size: 1.15em;
-                margin-bottom: 16px;
-            }
-
-            /* Filter buttons */
-            .filters-section {
+                font-size: 1.1em;
+                margin-bottom: 14px;
                 gap: 8px;
-                flex-wrap: wrap;
+                line-height: 1.3;
             }
+            .section-title span { font-size: 1em; }
+
+            /* ── Filter buttons ── */
+            .filters-section { gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
             .filter-btn {
-                padding: 8px 12px;
+                padding: 7px 12px;
                 font-size: 11px;
-                border-radius: 18px;
+                border-radius: 16px;
+                border-width: 1.5px;
             }
 
-            /* Cards — single column */
-            .cards-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
-            .effect-card {
-                padding: 18px;
-                border-radius: 14px;
-            }
-            .card-header {
-                gap: 8px;
-            }
-            .card-title {
-                font-size: 0.95em;
-                line-height: 1.35;
-            }
+            /* ── Effect cards: single column ── */
+            .cards-grid { grid-template-columns: 1fr; gap: 12px; }
+            .effect-card { padding: 16px; border-radius: 14px; }
+            .card-header { gap: 10px; margin-bottom: 10px; }
+            .card-header .card-icon { font-size: 1.6em; }
+            .card-number { font-size: 0.78em; }
+            .card-title { font-size: 0.95em; line-height: 1.35; margin: 8px 0; }
             .card-description {
-                font-size: 0.85em;
+                font-size: 0.82em;
                 line-height: 1.5;
+                margin-top: 8px;
+                /* Truncate long descriptions */
+                display: -webkit-box;
+                -webkit-line-clamp: 4;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
-            .card-badge {
+            .card-type-badge, .card-badge {
                 font-size: 10px;
                 padding: 4px 10px;
+                border-radius: 10px;
             }
 
-            /* TOP-5 */
-            .top5-grid {
-                grid-template-columns: 1fr;
+            /* ── TOP-5 cards ── */
+            .top5-grid { gap: 12px; }
+            .top5-item {
+                padding: 16px;
+                border-radius: 14px;
+                display: grid;
+                grid-template-columns: 44px 1fr;
+                gap: 12px;
+                align-items: start;
+            }
+            .top5-rank, .rank-badge {
+                width: 40px !important;
+                height: 40px !important;
+                font-size: 1.1em !important;
+                border-radius: 12px !important;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .top5-title, .card-title {
+                font-size: 0.9em !important;
+                line-height: 1.35;
+                font-weight: 700;
+            }
+            .card-effect-type {
+                font-size: 0.82em !important;
+                margin: 6px 0 !important;
+            }
+            .top5-desc, .card-description {
+                font-size: 0.8em;
+                line-height: 1.45;
+                -webkit-line-clamp: 3;
+            }
+
+            /* ── Бизнес-процесс: flow steps ── */
+            .main-flow { gap: 14px; margin-bottom: 30px; }
+            .flow-step { padding: 16px; border-radius: 14px; }
+
+            .step-header {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 14px;
+                margin-bottom: 12px;
+            }
+            .step-icon {
+                width: 52px !important;
+                height: 52px !important;
+                font-size: 1.4em !important;
+                flex-shrink: 0;
+            }
+            .step-number { font-size: 0.75em; margin-bottom: 4px; letter-spacing: 0.5px; }
+            .step-title { font-size: 1.1em; line-height: 1.25; margin-bottom: 6px; }
+            .step-description { font-size: 0.85em; line-height: 1.5; }
+
+            /* Participants: horizontal scroll row */
+            .step-participants {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                gap: 8px;
+                margin-top: 14px;
+                padding-bottom: 4px;
+            }
+            .participant {
+                flex-shrink: 0;
+                padding: 7px 12px;
+                font-size: 11px;
+                gap: 6px;
+                border-radius: 20px;
+                white-space: nowrap;
+            }
+
+            /* ── Branch container (Support flow) ── */
+            .branch-container {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .branch-box {
+                padding: 16px;
+                border-radius: 14px;
+            }
+            .branch-title {
+                font-size: 1.05em;
+                margin-bottom: 10px;
+                gap: 8px;
+            }
+            .branch-content { font-size: 0.85em; line-height: 1.55; }
+
+            /* ── Support diagram ── */
+            .support-flow { padding: 16px; border-radius: 14px; }
+            .support-diagram { gap: 20px; }
+
+            .support-step {
+                flex-direction: column !important;
+                align-items: center !important;
                 gap: 12px;
             }
 
-            /* Business process page */
-            .branch-container {
-                grid-template-columns: 1fr;
-                gap: 14px;
+            /* Icon + arrow row: keep them inline, centered above the card */
+            .support-icon-box {
+                width: 52px !important;
+                height: 52px !important;
+                font-size: 1.5em !important;
             }
-            .support-flow {
-                padding: 14px;
+
+            .arrow-right {
+                font-size: 1.4em !important;
+                transform: rotate(90deg);
+                display: block;
+                text-align: center;
             }
-            .flow-step {
-                padding: 14px;
-                border-radius: 12px;
+
+            .support-box {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box;
+                padding: 16px !important;
+                border-radius: 14px !important;
             }
-            .flow-step-title {
-                font-size: 0.95em;
+
+            /* Override inline styles inside support-box */
+            .support-box > div:first-child {
+                font-size: 1.05em !important;
+                font-weight: 700 !important;
+                margin-bottom: 8px !important;
+                line-height: 1.3 !important;
             }
-            .flow-step-desc {
-                font-size: 0.82em;
+            .support-box > div:nth-child(2),
+            .support-box > div:nth-child(3) {
+                font-size: 0.85em !important;
+                line-height: 1.55 !important;
             }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+                align-self: center;
+                font-size: 1.2em;
+            }
+
+            /* ── Legend ── */
+            .legend { padding: 20px 16px; border-radius: 14px; margin-top: 30px; }
+            .legend-title { font-size: 1.1em; margin-bottom: 16px; }
+            .legend-items { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .legend-icon {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 1.2em !important;
+            }
+            .legend-text { font-size: 0.8em; }
+
+            /* ── Process section spacing ── */
+            .process-section { margin-bottom: 30px; }
         }
 
         /* ========================================
            TABLET tweaks (431px – 1024px)
         ======================================== */
         @media (max-width: 1024px) and (min-width: 431px) {
-            .container,
-            .container-wide {
-                padding: 36px 28px;
-            }
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            }
+            .container, .container-wide { padding: 36px 28px; }
+            .cards-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+            .branch-container { grid-template-columns: 1fr; gap: 16px; }
         }
 
     </style>
@@ -891,7 +996,7 @@
         <div class="logo-section">
             <img src="data:image/jpeg;base64,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" alt="ЦРЦТ Logo" class="logo-img">
             <div class="logo-text">
-                <div class="logo-title">Минобр</div>
+                <div class="logo-title">ЦРЦТ</div>
                 <div class="logo-subtitle">Московская область</div>
             </div>
         </div>
