@@ -846,25 +846,46 @@
             .top5-item {
                 padding: 16px;
                 border-radius: 14px;
-                display: grid;
-                grid-template-columns: 44px 1fr;
-                gap: 12px;
-                align-items: start;
+                border-left-width: 4px;
             }
-            .top5-rank, .rank-badge {
-                width: 40px !important;
-                height: 40px !important;
-                font-size: 1.1em !important;
-                border-radius: 12px !important;
+            /* Inner flex wrapper */
+            .top5-item > div {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+            .top5-item .rank {
+                width: 36px !important;
+                min-width: 36px !important;
+                height: 36px !important;
+                font-size: 1em !important;
+                line-height: 36px !important;
+                border-radius: 50% !important;
+                margin-right: 0 !important;
                 flex-shrink: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                display: inline-block;
+                text-align: center;
             }
-            .top5-title, .card-title {
+            .top5-item .title {
                 font-size: 0.9em !important;
                 line-height: 1.35;
                 font-weight: 700;
+                margin: 0 0 6px 0 !important;
+            }
+            .top5-item .savings {
+                font-size: 0.85em !important;
+                margin: 4px 0 !important;
+                gap: 6px !important;
+            }
+            .top5-item .effect {
+                font-size: 0.8em !important;
+                line-height: 1.5 !important;
+                margin-top: 6px !important;
+                display: -webkit-box;
+                -webkit-line-clamp: 5;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
             .card-effect-type {
                 font-size: 0.82em !important;
