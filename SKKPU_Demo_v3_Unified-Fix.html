@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ГИС СККПУ - Демонстрация v3.0 | ЦРЦТ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F5F5F5;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header-compact {
+            background: #2D2D2D;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75em;
+            color: #CCCCCC;
+            font-weight: 400;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            background: transparent;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            border: 2px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .nav-btn.active {
+            background: #FF6B6B;
+            border-color: #FF6B6B;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .hero-compact {
+            background: linear-gradient(135deg, #1F1F1F 0%, #2D2D2D 100%);
+            color: white;
+            padding: 50px 50px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1em;
+            color: #CCCCCC;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 50px;
+        }
+
+        .container-wide {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 50px 50px 80px;
+        }
+
+        .controls-compact {
+            background: #FFFFFF;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            flex-wrap: wrap;
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-coral {
+            padding: 12px 28px;
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-coral:hover {
+            background: #FF8A80;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary {
+            padding: 12px 28px;
+            background: #333333;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            background: #2D2D2D;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .data-source {
+            padding: 12px 24px;
+            background: #F5F5F5;
+            color: #333333;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-left: auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: #FFFFFF;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .stat-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .stat-value {
+            font-size: 3.5em;
+            font-weight: 800;
+            color: #FF6B6B;
+            margin: 15px 0;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            color: #666666;
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            color: #333333;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .top5-grid {
+            display: grid;
+            gap: 25px;
+        }
+
+        .top5-item {
+            background: #FFFFFF;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            border-left: 6px solid #FF6B6B;
+        }
+
+        .top5-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.15);
+        }
+
+        .top5-item .rank {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: #FF6B6B;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-weight: 800;
+            font-size: 1.4em;
+            margin-right: 25px;
+        }
+
+        .top5-item .title {
+            font-size: 1.3em;
+            color: #333333;
+            font-weight: 700;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+
+        .top5-item .savings {
+            font-size: 1.6em;
+            color: #FF6B6B;
+            font-weight: 700;
+            margin: 18px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .top5-item .effect {
+            color: #666666;
+            line-height: 1.7;
+            margin-top: 15px;
+            font-size: 1.05em;
+        }
+
+        .filter-section {
+            margin-bottom: 40px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid #E0E0E0;
+            background: #FFFFFF;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 600;
+            color: #666666;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .filter-btn:hover {
+            border-color: #FF6B6B;
+            background: #F5F5F5;
+        }
+
+        .filter-btn.active {
+            background: #FF6B6B;
+            color: white;
+            border-color: #FF6B6B;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .effect-card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            border-left: 6px solid;
+        }
+
+        .effect-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .effect-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .effect-card .card-icon {
+            font-size: 3em;
+        }
+
+        .effect-card .card-number {
+            font-size: 0.9em;
+            color: #999999;
+            font-weight: 600;
+        }
+
+        .effect-card .card-title {
+            font-size: 1.2em;
+            color: #333333;
+            font-weight: 700;
+            line-height: 1.4;
+            margin: 15px 0;
+        }
+
+        .effect-card .card-type {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 12px 0;
+        }
+
+        .effect-card .card-description {
+            color: #666666;
+            line-height: 1.7;
+            margin-top: 15px;
+        }
+
+        .process-section {
+            margin-bottom: 80px;
+        }
+
+        .main-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .flow-step {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .step-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            flex-shrink: 0;
+        }
+
+        .step-info {
+            flex: 1;
+        }
+
+        .step-number {
+            font-size: 0.9em;
+            color: #999999;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .step-title {
+            font-size: 1.8em;
+            color: #333333;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .step-description {
+            color: #666666;
+            line-height: 1.7;
+            font-size: 1.1em;
+        }
+
+        .step-participants {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .participant {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: #F5F5F5;
+            border-radius: 50px;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #333333;
+        }
+
+        .branch-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 35px 0;
+        }
+
+        .branch-box {
+            background: #F5F5F5;
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s ease;
+            border: 3px solid;
+        }
+
+        .branch-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .branch-title {
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .branch-content {
+            color: #666666;
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        .support-flow {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .support-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .support-step {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .support-box {
+            background: #F5F5F5;
+            border-radius: 20px;
+            padding: 35px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .support-box:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .support-icon-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            flex-shrink: 0;
+            background: #FF6B6B;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .arrow-right {
+            font-size: 2.5em;
+            color: #FF6B6B;
+        }
+
+        .legend {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 45px;
+            margin-top: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .legend-title {
+            font-size: 1.8em;
+            color: #333333;
+            margin-bottom: 35px;
+            font-weight: 800;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .legend-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 1em;
+            color: #333333;
+            font-weight: 700;
+        }
+
+        .color-pm { background: #FF6B6B; }
+        .color-analyst { background: #FF8A80; }
+        .color-client { background: #666666; }
+        .color-dev { background: #333333; }
+        .color-senior { background: #2D2D2D; }
+        .color-support { background: #FF6B6B; }
+
+        .loading {
+            text-align: center;
+            padding: 100px 20px;
+            font-size: 1.5em;
+            color: #666666;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.8em;
+            }
+
+            .header-compact {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px 30px;
+            }
+
+            .header-nav {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-compact, .container, .container-wide {
+                padding: 40px 30px;
+            }
+
+            .controls-compact {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls-group {
+                flex-direction: column;
+            }
+
+            .data-source {
+                margin-left: 0;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .branch-container {
+                grid-template-columns: 1fr;
+            }
+
+            .support-flow {
+                padding: 30px;
+            }
+        }
+
+        .flow-step {
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .flow-step:nth-child(1) { animation-delay: 0.1s; }
+        .flow-step:nth-child(2) { animation-delay: 0.2s; }
+        .flow-step:nth-child(3) { animation-delay: 0.3s; }
+        .flow-step:nth-child(4) { animation-delay: 0.4s; }
+        .flow-step:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-compact">
+        <div class="logo-section">
+            <img src="data:image/jpeg;base64,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" alt="ЦРЦТ Logo" class="logo-img">
+            <div class="logo-text">
+                <div class="logo-title">ЦРЦТ</div>
+                <div class="logo-subtitle">Московская область</div>
+            </div>
+        </div>
+        <div class="header-nav">
+            <button class="nav-btn active" onclick="showPage('dashboard')">📊 Дашборд эффектов</button>
+            <button class="nav-btn" onclick="showPage('process')">🔄 Бизнес-процесс</button>
+        </div>
+    </div>
+
+    <div id="dashboard-page" class="page-content active">
+        <div class="hero-compact">
+            <h1 class="hero-title">Дашборд эффектов развития ГИС СККПУ</h1>
+            <p class="hero-subtitle">Система контроля ключевых показателей управления в сфере образования</p>
+        </div>
+
+        <div class="container">
+            <div class="controls-compact">
+                <div class="controls-group">
+                    <label for="csvFile" class="btn-coral">
+                        📁 Загрузить CSV
+                    </label>
+                    <input type="file" id="csvFile" class="file-input" accept=".csv">
+
+                    <button id="resetBtn" class="btn-secondary">🔄 Сбросить</button>
+                </div>
+
+                <div class="data-source" id="dataSource">
+                    📊 Используются встроенные данные из Plany-2026.csv
+                </div>
+            </div>
+
+            <div class="stats-grid" id="statsGrid"></div>
+
+            <div id="content">
+                <div class="loading">Загрузка дашборда...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="process-page" class="page-content">
+        <div class="hero-compact">
+            <h1 class="hero-title">Бизнес-процесс взаимодействия</h1>
+            <p class="hero-subtitle">Проектная команда ↔ Функциональный заказчик | ГИС СККПУ</p>
+        </div>
+
+        <div class="container-wide">
+            <div class="process-section">
+                <h2 class="section-title">
+                    <span>⚙️</span>
+                    Процесс разработки функционала
+                </h2>
+
+                <div class="main-flow">
+                    <div class="flow-step">
+                        <div class="step-header">
+                            <div class="step-icon color-pm">👥</div>
+                            <div class="step-info">
+                                <div class="step-number">ШАГ 1 • ЕЖЕНЕДЕЛЬНО</div>
+                                <div class="step-title">Очная встреча с заказчиком</div>
+                            </div>
+                        </div>
+                        <div class="step-description">
+                            Обсуждение текущего статуса задач и планирование новых. Заказчик описывает бизнес-задачи.
+                        </div>
+                        <div class="step-participants">
+                            <span class="participant">👨‍💼 Руководитель проекта</span>
+                            <span class="participant">📊 Аналитик</span>
+                            <span class="participant">🎯 Функциональный заказчик</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="step-header">
+                            <div class="step-icon color-analyst">📝</div>
+                            <div class="step-info">
+                                <div class="step-number">ШАГ 2 • ФОРМАЛИЗАЦИЯ</div>
+                                <div class="step-title">Перевод бизнес-задачи в ТТ</div>
+                            </div>
+                        </div>
+                        <div class="step-description">
+                            Бизнес-задача переводится в техническое задание для разработчиков.
+                        </div>
+                        <div class="step-participants">
+                            <span class="participant">👨‍💼 Руководитель проекта</span>
+                            <span class="participant">📊 Аналитик</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="step-header">
+                            <div class="step-icon color-senior">🔀</div>
+                            <div class="step-info">
+                                <div class="step-number">ШАГ 3 • ПОСТАНОВКА ЗАДАЧИ</div>
+                                <div class="step-title">Распределение по типу и сложности</div>
+                            </div>
+                        </div>
+
+                        <div class="branch-container">
+                            <div class="branch-box" style="border-color: #333333;">
+                                <div class="branch-title" style="color: #333333;">
+                                    <span>📦</span> Большая задача
+                                </div>
+                                <div class="branch-content">
+                                    Старший разработчик самостоятельно или совместно с РП/аналитиком декомпозирует задачу и распределяет на команду разработки.
+                                </div>
+                            </div>
+
+                            <div class="branch-box" style="border-color: #FF6B6B;">
+                                <div class="branch-title" style="color: #FF6B6B;">
+                                    <span>📋</span> Небольшая задача
+                                </div>
+                                <div class="branch-content">
+                                    Детализация задачи и постановка конкретному разработчику для выполнения.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-participants">
+                            <span class="participant">👨‍💻 Старший разработчик</span>
+                            <span class="participant">👨‍💼 Руководитель проекта</span>
+                            <span class="participant">📊 Аналитик</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="step-header">
+                            <div class="step-icon color-dev">🧪</div>
+                            <div class="step-info">
+                                <div class="step-number">ШАГ 4 • КОНТРОЛЬ КАЧЕСТВА</div>
+                                <div class="step-title">Разработка → Тестирование</div>
+                            </div>
+                        </div>
+                        <div class="step-description">
+                            После завершения разработки задача передается на функциональное тестирование. Тестирующая сторона зависит от типа и сложности задачи.
+                        </div>
+                        <div class="step-participants">
+                            <span class="participant">👨‍💻 Разработчик</span>
+                            <span class="participant">📊 Аналитик (тестирование)</span>
+                            <span class="participant">👨‍💼 РП (тестирование)</span>
+                            <span class="participant">🎯 Функциональный заказчик (тестирование)</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="step-header">
+                            <div class="step-icon color-pm">🚀</div>
+                            <div class="step-info">
+                                <div class="step-number">ШАГ 5 • ВНЕДРЕНИЕ</div>
+                                <div class="step-title">Планирование релиза и выпуск</div>
+                            </div>
+                        </div>
+                        <div class="step-description">
+                            После успешного тестирования на тестовом контуре планируется релиз. Функционал выпускается в продуктовый контур.
+                        </div>
+                        <div class="step-participants">
+                            <span class="participant">👨‍💼 Руководитель проекта</span>
+                            <span class="participant">👨‍💻 Команда разработки</span>
+                            <span class="participant">🎯 Функциональный заказчик</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-section">
+                <h2 class="section-title">
+                    <span>🛠️</span>
+                    Техническая поддержка (параллельный процесс)
+                </h2>
+
+                <div class="support-flow">
+                    <div class="support-diagram">
+                        <div class="support-step">
+                            <div class="support-icon-box">👤</div>
+                            <div class="arrow-right">→</div>
+                            <div class="support-box">
+                                <div style="font-size: 1.5em; font-weight: 800; margin-bottom: 12px; color: #333333;">
+                                    Пользователь системы
+                                </div>
+                                <div style="color: #666666; line-height: 1.7;">
+                                    Возникает вопрос или необходима консультация по работе в системе
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="support-step">
+                            <div class="support-icon-box">🤖</div>
+                            <div class="arrow-right">→</div>
+                            <div class="support-box">
+                                <div style="font-size: 1.5em; font-weight: 800; margin-bottom: 12px; color: #333333;">
+                                    🔹 Уровень 1: Чат-бот
+                                </div>
+                                <div style="color: #666666; line-height: 1.7;">
+                                    Первичная консультация на основе базы знаний. Ответы на типовые вопросы и инструкции по работе с системой.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="support-step">
+                            <div class="support-icon-box">👨‍💼</div>
+                            <div class="arrow-right">→</div>
+                            <div class="support-box">
+                                <div style="font-size: 1.5em; font-weight: 800; margin-bottom: 12px; color: #333333;">
+                                    🔸 Уровень 2: Специалист техподдержки
+                                </div>
+                                <div style="color: #666666; margin-bottom: 12px; line-height: 1.7;">
+                                    Обращение к специалисту в случаях:
+                                </div>
+                                <div style="color: #666666; line-height: 1.8;">
+                                    • Необходимо предоставить новый доступ<br>
+                                    • Требуется решить техническую проблему<br>
+                                    • Консультация выходит за рамки базы знаний чат-бота
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">📌 Участники процесса</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-icon color-pm">👨‍💼</div>
+                        <div class="legend-text">Руководитель проекта</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon color-analyst">📊</div>
+                        <div class="legend-text">Аналитик</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon color-client">🎯</div>
+                        <div class="legend-text">Функциональный заказчик</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon color-senior">👨‍💻</div>
+                        <div class="legend-text">Старший разработчик</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon color-dev">💻</div>
+                        <div class="legend-text">Разработчики</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon color-support">🛠️</div>
+                        <div class="legend-text">Техническая поддержка</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageName) {
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (pageName === 'dashboard') {
+                document.getElementById('dashboard-page').classList.add('active');
+                document.querySelectorAll('.nav-btn')[0].classList.add('active');
+            } else if (pageName === 'process') {
+                document.getElementById('process-page').classList.add('active');
+                document.querySelectorAll('.nav-btn')[1].classList.add('active');
+            }
+        }
+
+        const DEFAULT_DATA = [{"№ п/п": 1, "Показатель": "Функционал расчета субвенции в части актуализации методики расчета Госстандарта", "Ожидаемый эффект": "Поддержание в актуальном состоянии методики для корректных расчетов объемов финансирования", "Тип эффекта": "Поддержание актуальности", "Место в топе": null}, {"№ п/п": 2, "Показатель": "Функционал Ежемесячного сбора контингента муниципальных организаций в части оптимизации процесса сбора показателей молодых специалистов", "Ожидаемый эффект": "Поддержание актуальности показателей в соответствие с методикой госстандарта 2026. Сокращение времени обработки показателей со сторону ОМСУ и МИНОБР", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 3, "Показатель": "Функционала Ежемесячного сбора контингента частных организаций в части оптимизации процесса сбора показателей численности", "Ожидаемый эффект": "Поддержание актуальности показателей в соответствие с методикой госстандарта 2026. Сокращение времени обработки показателей со сторону ОМСУ и МИНОБР", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 4, "Показатель": "Функционал учета тарификационных форм в части актуализации методики расчета тарификационных списков", "Ожидаемый эффект": "Поддержание в актуальном состоянии методики расчета в тарификационных списках", "Тип эффекта": "Поддержание актуальности", "Место в топе": null}, {"№ п/п": 5, "Показатель": "Функционал сбора контингента муниципальных организаций в части актуализации форм для сбора", "Ожидаемый эффект": "Поддержание в актуальном состоянии форм отчетности", "Тип эффекта": "Поддержание актуальности", "Место в топе": null}, {"№ п/п": 6, "Показатель": "Трансформационный проект: Цифровизация ГП", "Ожидаемый эффект": "1. Перестроение бизнес-процессов ведомств;\n2. Систематизация ГП( Финансирование, порядки, мероприятия);\n3. Сокращение трудозатрат всех подразделений инистерства, в среднем 260 часов в год;\n4. Сокращение редакций ГП с 2,5 до 1,5 (-37,5 %);\n5. Актуальный доступ структурным подразделениям к материалам ГП в реальном времени(сейчас отсуствует);\n6. Корректировка финансирования\\порядка с 3-4 мес до 5 дней;\n7. Обеспечить нахождение ведомства в «зеленой зоне» рейтинга эффективности.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": 2}, {"№ п/п": 7, "Показатель": "Функционал анализа сведений Тарификационных форм", "Ожидаемый эффект": "Сокращение времени на анализ тарификационных форм. Повышение качества принятия решений.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 8, "Показатель": "Реализация Дашборда Тарификация", "Ожидаемый эффект": "Сокращение времени на анализ тарификационных форм в 2 раза. Повышение качества принятия решений (до 1,5 раз снижение числа запросов от руководства к аналитикам)", "Тип эффекта": "Ускорение процессов", "Место в топе": 3}, {"№ п/п": 9, "Показатель": "Функционал анализа показателей заработной платы образовательных организаций в части разработки отчета ЗП- Образование (Краткий)", "Ожидаемый эффект": "Сокращение времени и трудозатрат на обработку и анализ данных (показателей, объемов и пр.)", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 10, "Показатель": "Реализация модели расчета прогнозов объемов финансирования", "Ожидаемый эффект": "1. Сокращение времени на планирование и анализ прогнозов объемов финансирования образовательных учреждений с 2-х часов до 10 минут.\n2. Увеличение точности прогнозов за счет добавления данных из внешних источников (Госуслуга, миграция населения и др) сейчас используется объемы финансирования за прошлые года в разрезе текущего года. Потенциал экономии бюджета.", "Тип эффекта": "Снижение нагрузки на персонал", "Место в топе": 4}, {"№ п/п": 11, "Показатель": "Функционал обращения пользователя к базе знаний", "Ожидаемый эффект": "Ускорение процесса адаптации новых сотрудников.  Потенциал сокращения времени обучения на 30-50% и до 40% обращений в поддержку", "Тип эффекта": "Ускорение процессов", "Место в топе": null}, {"№ п/п": 12, "Показатель": "Функционал: Реестр уточнений", "Ожидаемый эффект": "Сокращение времени на анализ истории уточнений", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 13, "Показатель": "Функционал анализа сведений Тарификационных форм в части добавления разрезов анализа", "Ожидаемый эффект": "Сокращение времени на анализ тарификационных форм. Повышение качества принятия решений.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 14, "Показатель": "Функционал: Интеграция с ЕЦИС МО (ЦБ МО)", "Ожидаемый эффект": "Автоматизация заполнения отчетных форм, экономия трудозатрат от 3336 до 4526 часов в год", "Тип эффекта": "Ускорение процессов", "Место в топе": null}, {"№ п/п": 15, "Показатель": "Функционал: Рабочее место аналитика", "Ожидаемый эффект": "Сокращение времени на обработку сбора показателей", "Тип эффекта": "", "Место в топе": null}, {"№ п/п": 16, "Показатель": "Функционал универсального сбора в части возможности подписания ЭП", "Ожидаемый эффект": "Повышение качества данных. Повышение качества принятия решений.", "Тип эффекта": "Повышение качества данных", "Место в топе": null}, {"№ п/п": 17, "Показатель": "Подключение ИИ ассистента для автоматического доступа к сведениям системы и анализа", "Ожидаемый эффект": "Сокращение трудозатрат до 764  часов в год за счет ИИ в сравнении с классическим обращением к отчетам (в расчете на 5 аналитиков)", "Тип эффекта": "Ускорение процессов", "Место в топе": 5}, {"№ п/п": 18, "Показатель": "Трансформационный проект: Реализация новой модели сбора и верификации контингента для расчета субвенции", "Ожидаемый эффект": "1. Актуальная обновленная информация в системах Моя школа и ЕИСДОУ. (Показатель отклонений от МШ и ЕИС ДОУ  до 1% к декабрю 2026)\n2. Повышение верификации данных для расчета субвенции на финансовое обеспечение дошкольного и общего образования. Экономия бюджета порядка 231 млн. руб. в год.\n3.Снижение ручного и двойного ввода информации. (от 4 378 до 6 880 часов в год, в среднем 5 629 часов)\n4. Снижение нагрузки на управления при контролировании предоставления информации.", "Тип эффекта": "Ускорение процессов", "Место в топе": 1}, {"№ п/п": 19, "Показатель": "Функционал: Интеграция с ГИС РЭБ", "Ожидаемый эффект": "Сокращение времени и трудозатрат на обмен данными. Сокращение времени и трудозатрат на сдачу отчетности.", "Тип эффекта": "Ускорение процессов", "Место в топе": null}, {"№ п/п": 20, "Показатель": "Функционал анализа контингента в части сравнения численности и объемов контингента и бюджета между собой", "Ожидаемый эффект": "Сокращение времени на анализ показателей численности. Повышение качества принятия решений.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}];
+        let currentData = DEFAULT_DATA;
+
+        const effectTypes = {
+            'Повышение качества данных': { icon: '📊', color: '#FF6B6B' },
+            'Поддержание актуальности': { icon: '🔄', color: '#FF8A80' },
+            'Сокращение трудозатрат': { icon: '⏱️', color: '#FF6B6B' },
+            'Улучшение аналитики и принятия решений': { icon: '💡', color: '#333333' },
+            'Автоматизация процессов': { icon: '⚙️', color: '#666666' },
+            'Снижение нагрузки на персонал': { icon: '👥', color: '#FF8A80' },
+            'Экономия бюджета': { icon: '💰', color: '#333333' },
+            'Ускорение процессов': { icon: '🚀', color: '#FF6B6B' },
+            'Прочие улучшения': { icon: '✨', color: '#999999' }
+        };
+
+        function getTop5(data) {
+            // Фильтруем записи с заполненным "Место в топе" и сортируем по этому значению
+            return data
+                .filter(item => item['Место в топе'] !== null && item['Место в топе'] !== undefined && item['Место в топе'] !== '')
+                .sort((a, b) => parseFloat(a['Место в топе']) - parseFloat(b['Место в топе']))
+                .slice(0, 5);
+        }
+
+        function renderDashboard(data) {
+            renderStats(data);
+
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <section class="section">
+                    <h2 class="section-title">
+                        <span>🏆</span>
+                        ТОП-5 показателей по сокращению трудозатрат
+                    </h2>
+                    <div class="top5-grid" id="top5Grid"></div>
+                </section>
+                <section class="section">
+                    <h2 class="section-title">
+                        <span>📋</span>
+                        Все показатели эффективности
+                    </h2>
+                    <div class="filter-section" id="filterSection"></div>
+                    <div class="cards-grid" id="cardsGrid"></div>
+                </section>
+            `;
+
+            renderTop5(data);
+            renderFilters(data);
+            renderCards(data);
+        }
+
+        function renderStats(data) {
+            const statsGrid = document.getElementById('statsGrid');
+            const typeCounts = {};
+            data.forEach(item => {
+                const type = item['Тип эффекта'] || 'Прочие улучшения';
+                typeCounts[type] = (typeCounts[type] || 0) + 1;
+            });
+
+            const sortedTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).slice(0, 4);
+            let statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value">${data.length}</div>
+                    <div class="stat-label">Всего показателей</div>
+                </div>
+            `;
+
+            sortedTypes.forEach(([type, count]) => {
+                const typeInfo = effectTypes[type] || { icon: '✨', color: '#999999' };
+                statsHTML += `
+                    <div class="stat-card">
+                        <div class="stat-icon">${typeInfo.icon}</div>
+                        <div class="stat-value">${count}</div>
+                        <div class="stat-label">${type}</div>
+                    </div>
+                `;
+            });
+
+            statsGrid.innerHTML = statsHTML;
+        }
+
+        function renderTop5(data) {
+            const top5Grid = document.getElementById('top5Grid');
+            const top5 = getTop5(data);
+
+            if (top5.length === 0) {
+                top5Grid.innerHTML = '<p style="text-align: center; color: #666;">Нет данных с указанным местом в топе</p>';
+                return;
+            }
+
+            let html = '';
+            top5.forEach((item) => {
+                const rank = Math.round(parseFloat(item['Место в топе']));
+                html += `
+                    <div class="top5-item">
+                        <div style="display: flex; align-items: flex-start;">
+                            <span class="rank">${rank}</span>
+                            <div style="flex: 1;">
+                                <div class="title">${item['Показатель']}</div>
+                                <div class="savings">
+                                    <span>⏱️</span>
+                                    <span>${item['Тип эффекта'] || 'Эффект'}</span>
+                                </div>
+                                <div class="effect">${item['Ожидаемый эффект']}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            top5Grid.innerHTML = html;
+        }
+
+        function renderFilters(data) {
+            const filterSection = document.getElementById('filterSection');
+            const types = [...new Set(data.map(item => item['Тип эффекта'] || 'Прочие улучшения'))];
+
+            let html = `
+                <button class="filter-btn active" data-type="all">
+                    ✨ Все (${data.length})
+                </button>
+            `;
+
+            types.forEach(type => {
+                const typeInfo = effectTypes[type] || { icon: '✨', color: '#999999' };
+                const count = data.filter(item => (item['Тип эффекта'] || 'Прочие улучшения') === type).length;
+                html += `
+                    <button class="filter-btn" data-type="${type}">
+                        ${typeInfo.icon} ${type} (${count})
+                    </button>
+                `;
+            });
+
+            filterSection.innerHTML = html;
+
+            filterSection.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterSection.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filterType = this.dataset.type;
+
+                    if (filterType === 'all') {
+                        renderCards(currentData);
+                    } else {
+                        const filtered = currentData.filter(item => (item['Тип эффекта'] || 'Прочие улучшения') === filterType);
+                        renderCards(filtered);
+                    }
+                });
+            });
+        }
+
+        function renderCards(data) {
+            const cardsGrid = document.getElementById('cardsGrid');
+            let html = '';
+
+            data.forEach(item => {
+                const effectType = item['Тип эффекта'] || 'Прочие улучшения';
+                const typeInfo = effectTypes[effectType] || { icon: '✨', color: '#999999' };
+                html += `
+                    <div class="effect-card" style="border-left-color: ${typeInfo.color}">
+                        <div class="card-header">
+                            <div class="card-icon">${typeInfo.icon}</div>
+                            <div class="card-number">№ ${item['№ п/п']}</div>
+                        </div>
+                        <div class="card-title">${item['Показатель']}</div>
+                        <div class="card-type" style="background-color: ${typeInfo.color}15; color: ${typeInfo.color}">
+                            ${effectType}
+                        </div>
+                        <div class="card-description">${item['Ожидаемый эффект']}</div>
+                    </div>
+                `;
+            });
+
+            cardsGrid.innerHTML = html;
+        }
+
+        
+        // Inline CSV parser — handles quoted multiline fields, semicolon delimiter
+        function parseCSVInline(text) {
+            var delimiter = ';';
+            var rows = [];
+            var row = [];
+            var field = '';
+            var inQuotes = false;
+            var i = 0;
+            while (i < text.length) {
+                var ch = text[i];
+                if (inQuotes) {
+                    if (ch === '"') {
+                        if (i + 1 < text.length && text[i + 1] === '"') { field += '"'; i += 2; continue; }
+                        else { inQuotes = false; i++; continue; }
+                    }
+                    field += ch;
+                } else {
+                    if (ch === '"') { inQuotes = true; i++; continue; }
+                    if (ch === delimiter) { row.push(field.trim()); field = ''; i++; continue; }
+                    if (ch === '\r') { i++; continue; }
+                    if (ch === '\n') {
+                        row.push(field.trim()); field = '';
+                        if (row.some(function(v) { return v.length > 0; })) rows.push(row);
+                        row = []; i++; continue;
+                    }
+                    field += ch;
+                }
+                i++;
+            }
+            if (field.trim() || row.length) { row.push(field.trim()); if (row.some(function(v){return v.length>0;})) rows.push(row); }
+            if (!rows.length) return [];
+            var headers = rows[0];
+            var result = [];
+            for (var r = 1; r < rows.length; r++) {
+                if (!rows[r].join('').trim()) continue;
+                var obj = {};
+                headers.forEach(function(h, idx) { obj[h.trim()] = rows[r][idx] !== undefined ? rows[r][idx] : ''; });
+                result.push(obj);
+            }
+            return result;
+        }
+
+document.getElementById('csvFile').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    var parsed = parseCSVInline(ev.target.result);
+                    var data = parsed.map(function(row) {
+                        var cleaned = {};
+                        Object.keys(row).forEach(function(k) {
+                            var key = k.trim();
+                            var val = row[k] ? row[k].trim() : '';
+                            if (key === '№ п/п') { cleaned[key] = parseInt(val) || val; }
+                            else if (key === 'Место в топе') { cleaned[key] = val ? parseInt(val) : null; }
+                            else { cleaned[key] = val; }
+                        });
+                        return cleaned;
+                    }).filter(function(row) {
+                        return row['№ п/п'] && row['Показатель'];
+                    });
+                    if (data.length > 0) {
+                        currentData = data;
+                        document.getElementById('dataSource').innerHTML = '📁 Загружен файл: ' + file.name + ' (' + data.length + ' записей)';
+                        renderDashboard(data);
+                    } else {
+                        alert('Файл загружен, но данные не распознаны. Проверьте формат CSV (разделитель «;»).');
+                    }
+                } catch(err) {
+                    alert('Ошибка: ' + err.message);
+                }
+            };
+            reader.readAsText(file, 'windows-1251');
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            currentData = DEFAULT_DATA;
+            document.getElementById('dataSource').innerHTML = '📊 Используются встроенные данные из Plany-2026.csv';
+            document.getElementById('csvFile').value = '';
+            renderDashboard(DEFAULT_DATA);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDashboard(DEFAULT_DATA);
+        });
+    </script>
+</body>
+</html>
