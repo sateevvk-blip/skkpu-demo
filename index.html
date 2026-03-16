@@ -882,10 +882,32 @@
                 font-size: 0.8em !important;
                 line-height: 1.5 !important;
                 margin-top: 6px !important;
+            }
+            .top5-item .effect-text {
                 display: -webkit-box;
-                -webkit-line-clamp: 5;
+                -webkit-line-clamp: 4;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
+                transition: all 0.3s ease;
+            }
+            .top5-item .effect-text.expanded {
+                display: block;
+                -webkit-line-clamp: unset;
+                overflow: visible;
+            }
+            .top5-item .expand-btn {
+                display: none;
+                background: none;
+                border: none;
+                color: #FF6B6B;
+                font-size: 0.85em;
+                font-weight: 600;
+                padding: 6px 0;
+                cursor: pointer;
+                font-family: 'Montserrat', sans-serif;
+            }
+            .top5-item .expand-btn.visible {
+                display: inline-block;
             }
             .card-effect-type {
                 font-size: 0.82em !important;
@@ -1414,7 +1436,10 @@
                                     <span>⏱️</span>
                                     <span>${item['Тип эффекта'] || 'Эффект'}</span>
                                 </div>
-                                <div class="effect">${item['Ожидаемый эффект']}</div>
+                                <div class="effect">
+                                    <div class="effect-text">${item['Ожидаемый эффект']}</div>
+                                    <button class="expand-btn" onclick="toggleExpand(this)">Читать далее ▾</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1422,6 +1447,33 @@
             });
 
             top5Grid.innerHTML = html;
+            initExpandButtons();
+        }
+
+        function toggleExpand(btn) {
+            var textEl = btn.previousElementSibling;
+            if (textEl.classList.contains('expanded')) {
+                textEl.classList.remove('expanded');
+                btn.textContent = 'Читать далее ▾';
+            } else {
+                textEl.classList.add('expanded');
+                btn.textContent = 'Свернуть ▴';
+            }
+        }
+
+        function initExpandButtons() {
+            // Show expand buttons only for texts that are actually truncated
+            setTimeout(function() {
+                var items = document.querySelectorAll('.top5-item .effect-text');
+                items.forEach(function(el) {
+                    var btn = el.nextElementSibling;
+                    if (btn && el.scrollHeight > el.clientHeight + 2) {
+                        btn.classList.add('visible');
+                    } else if (btn) {
+                        btn.classList.remove('visible');
+                    }
+                });
+            }, 100);
         }
 
         function renderFilters(data) {
