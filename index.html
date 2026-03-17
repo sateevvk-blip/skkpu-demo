@@ -214,13 +214,13 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 50px 50px;
+            padding: 24px 50px 50px;
         }
 
         .container-wide {
             max-width: 1600px;
             margin: 0 auto;
-            padding: 50px 50px 80px;
+            padding: 24px 50px 80px;
         }
 
         .controls-compact {
@@ -404,6 +404,49 @@
             line-height: 1.7;
             margin-top: 15px;
             font-size: 1.05em;
+        }
+
+        .top5-item .effect-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .top5-item .effect-text.expanded {
+            display: block;
+            -webkit-line-clamp: unset;
+            overflow: visible;
+        }
+        .top5-item .expand-btn {
+            display: none;
+            background: none;
+            border: 1.5px solid #FF6B6B;
+            color: #FF6B6B;
+            font-size: 0.85em;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+        .top5-item .expand-btn:hover {
+            background: #FF6B6B;
+            color: white;
+        }
+        .top5-item .expand-btn.visible {
+            display: inline-block;
+        }
+
+        /* Dashboard page title */
+        .dashboard-title {
+            font-size: 2em;
+            color: #333;
+            font-weight: 800;
+            text-align: center;
+            padding: 0 0 10px;
         }
 
         .filter-section {
@@ -849,6 +892,9 @@
             /* ── Containers ── */
             .container, .container-wide { padding: 16px 14px; }
 
+            /* ── Dashboard title ── */
+            .dashboard-title { font-size: 1.2em; padding: 16px 0 6px; }
+
             /* ── Stats grid: 2 columns ── */
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -956,18 +1002,8 @@
                 overflow: visible;
             }
             .top5-item .expand-btn {
-                display: none;
-                background: none;
-                border: none;
-                color: #FF6B6B;
-                font-size: 0.85em;
-                font-weight: 600;
-                padding: 6px 0;
-                cursor: pointer;
-                font-family: 'Montserrat', sans-serif;
-            }
-            .top5-item .expand-btn.visible {
-                display: inline-block;
+                font-size: 0.78em;
+                padding: 5px 12px;
             }
             .card-effect-type {
                 font-size: 0.82em !important;
@@ -1146,6 +1182,7 @@
 
     <div id="dashboard-page" class="page-content active">
         <div class="container">
+            <h1 class="dashboard-title" id="dashboardTitle">📊 Дашборд результатов 2026</h1>
 
             <div class="stats-grid" id="statsGrid"></div>
 
@@ -1672,6 +1709,11 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
                     if (data.length > 0) {
                         currentData = data;
                         document.getElementById('infoPopupText').textContent = '📁 Загружен: ' + file.name + ' (' + data.length + ' записей)';
+                        // Extract year from filename (e.g. Plany-2025.csv → 2025)
+                        var yearMatch = file.name.match(/(20\d{2})/);
+                        if (yearMatch) {
+                            document.getElementById('dashboardTitle').textContent = '📊 Дашборд результатов ' + yearMatch[1];
+                        }
                         renderDashboard(data);
                     } else {
                         alert('Файл загружен, но данные не распознаны. Проверьте формат CSV (разделитель «;»).');
