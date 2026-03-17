@@ -65,6 +65,100 @@
             align-items: center;
         }
 
+        /* ── Header utility icons (gear + info) ── */
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-left: auto;
+        }
+        .header-icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            background: transparent;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            font-size: 16px;
+            padding: 0;
+        }
+        .header-icon-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.45);
+        }
+        .header-icon-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Info tooltip/popup */
+        .info-popup {
+            display: none;
+            position: fixed;
+            top: 0; right: 0;
+            background: #2D2D2D;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            z-index: 9999;
+            line-height: 1.5;
+        }
+        .info-popup::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 14px;
+            width: 12px;
+            height: 12px;
+            background: #2D2D2D;
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+        .info-popup.visible { display: block; }
+
+        /* ── Page-level nav tabs (moved below header) ── */
+        .page-tabs {
+            display: flex;
+            gap: 10px;
+            padding: 14px 50px;
+            background: #fff;
+            border-bottom: 1px solid #E8E8E8;
+        }
+        .tab-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            background: #F0F0F0;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .tab-btn:hover {
+            background: #E0E0E0;
+        }
+        .tab-btn.active {
+            background: #FF6B6B;
+            color: white;
+        }
+
         .nav-btn {
             padding: 10px 24px;
             border-radius: 50px;
@@ -729,63 +823,31 @@
             }
             .logo-img { width: auto; height: 32px; }
 
-            /* ── Navigation ── */
-            .header-nav {
-                gap: 6px;
-                flex-shrink: 1;
-                min-width: 0;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            .nav-btn {
-                padding: 6px 10px;
-                font-size: 10px;
-                border-width: 1.5px;
-                white-space: nowrap;
-                flex-shrink: 0;
+            /* ── Header actions (gear + info icons) ── */
+            .header-actions { gap: 8px; }
+            .header-icon-btn { width: 32px; height: 32px; }
+            .header-icon-btn svg { width: 15px; height: 15px; }
+            .info-popup {
+                font-size: 11px;
+                right: -8px;
+                white-space: normal;
+                max-width: 260px;
             }
 
-            /* ── Hero ── */
-            .hero-compact { padding: 20px 16px 16px; }
-            .hero-title { font-size: 1.25em; line-height: 1.2; margin-bottom: 6px; }
-            .hero-subtitle { font-size: 0.82em; line-height: 1.4; }
+            /* ── Page tabs (replaces old nav-btn in header) ── */
+            .page-tabs {
+                padding: 10px 14px;
+                gap: 8px;
+            }
+            .tab-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+                flex: 1;
+                text-align: center;
+            }
 
             /* ── Containers ── */
             .container, .container-wide { padding: 16px 14px; }
-
-            /* ── Controls ── */
-            .controls-compact {
-                padding: 14px;
-                flex-direction: column;
-                gap: 10px;
-                border-radius: 14px;
-                margin-bottom: 18px;
-            }
-            .controls-group { flex-direction: column; gap: 8px; width: 100%; }
-            .btn-primary, .btn-secondary, .btn-coral {
-                width: 100%;
-                text-align: center;
-                justify-content: center;
-                padding: 11px 14px;
-                font-size: 13px;
-                box-sizing: border-box;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-            /* Label acting as button — center contents */
-            label.btn-coral {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            .data-source {
-                margin-left: 0;
-                font-size: 11px;
-                text-align: center;
-                padding: 8px 10px;
-            }
 
             /* ── Stats grid: 2 columns ── */
             .stats-grid {
@@ -1062,33 +1124,28 @@
             <img src="data:image/png;base64,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" alt="ЦРЦТ Logo" class="logo-img">
             <!-- logo text removed — new logo already contains branding -->
         </div>
-        <div class="header-nav">
-            <button class="nav-btn active" onclick="showPage('dashboard')">📊 Дашборд эффектов</button>
-            <button class="nav-btn" onclick="showPage('process')">🔄 Бизнес-процесс</button>
+        <div class="header-actions">
+            <button class="header-icon-btn" id="infoBtn" title="Информация о данных" onclick="toggleInfoPopup(event)">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div class="info-popup" id="infoPopup">
+                    <span id="infoPopupText">📊 Используются встроенные данные из Plany-2026.csv</span>
+                </div>
+            </button>
+            <label class="header-icon-btn" for="csvFile" title="Загрузить CSV">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </label>
+            <input type="file" id="csvFile" class="file-input" accept=".csv">
         </div>
     </div>
 
+    <!-- Page-level navigation tabs -->
+    <div class="page-tabs">
+        <button class="tab-btn active" onclick="showPage('dashboard')">📊 Дашборд эффектов</button>
+        <button class="tab-btn" onclick="showPage('process')">🔄 Бизнес-процесс</button>
+    </div>
+
     <div id="dashboard-page" class="page-content active">
-        <div class="hero-compact">
-            <h1 class="hero-title">Дашборд эффектов развития ГИС СККПУ</h1>
-            <p class="hero-subtitle">Система контроля ключевых показателей управления в сфере образования</p>
-        </div>
-
         <div class="container">
-            <div class="controls-compact">
-                <div class="controls-group">
-                    <label for="csvFile" class="btn-coral">
-                        📁 Загрузить CSV
-                    </label>
-                    <input type="file" id="csvFile" class="file-input" accept=".csv">
-
-                    <button id="resetBtn" class="btn-secondary">🔄 Сбросить</button>
-                </div>
-
-                <div class="data-source" id="dataSource">
-                    📊 Используются встроенные данные из Plany-2026.csv
-                </div>
-            </div>
 
             <div class="stats-grid" id="statsGrid"></div>
 
@@ -1099,11 +1156,6 @@
     </div>
 
     <div id="process-page" class="page-content">
-        <div class="hero-compact">
-            <h1 class="hero-title">Бизнес-процесс взаимодействия</h1>
-            <p class="hero-subtitle">Проектная команда ↔ Функциональный заказчик | ГИС СККПУ</p>
-        </div>
-
         <div class="container-wide">
             <div class="process-section">
                 <h2 class="section-title">
@@ -1315,18 +1367,37 @@
                 page.classList.remove('active');
             });
 
-            document.querySelectorAll('.nav-btn').forEach(btn => {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
 
             if (pageName === 'dashboard') {
                 document.getElementById('dashboard-page').classList.add('active');
-                document.querySelectorAll('.nav-btn')[0].classList.add('active');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
             } else if (pageName === 'process') {
                 document.getElementById('process-page').classList.add('active');
-                document.querySelectorAll('.nav-btn')[1].classList.add('active');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
             }
         }
+
+        function toggleInfoPopup(e) {
+            e.stopPropagation();
+            var popup = document.getElementById('infoPopup');
+            var btn = document.getElementById('infoBtn');
+            var rect = btn.getBoundingClientRect();
+            if (!popup.classList.contains('visible')) {
+                popup.style.top = (rect.bottom + 10) + 'px';
+                popup.style.right = (window.innerWidth - rect.right) + 'px';
+                popup.classList.add('visible');
+            } else {
+                popup.classList.remove('visible');
+            }
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#infoBtn')) {
+                document.getElementById('infoPopup').classList.remove('visible');
+            }
+        });
 
         const DEFAULT_DATA = [{"№ п/п": 1, "Показатель": "Функционал расчета субвенции в части актуализации методики расчета Госстандарта", "Ожидаемый эффект": "Поддержание в актуальном состоянии методики для корректных расчетов объемов финансирования", "Тип эффекта": "Поддержание актуальности", "Место в топе": null}, {"№ п/п": 2, "Показатель": "Функционал Ежемесячного сбора контингента муниципальных организаций в части оптимизации процесса сбора показателей молодых специалистов", "Ожидаемый эффект": "Поддержание актуальности показателей в соответствие с методикой госстандарта 2026. Сокращение времени обработки показателей со сторону ОМСУ и МИНОБР", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 3, "Показатель": "Функционала Ежемесячного сбора контингента частных организаций в части оптимизации процесса сбора показателей численности", "Ожидаемый эффект": "Поддержание актуальности показателей в соответствие с методикой госстандарта 2026. Сокращение времени обработки показателей со сторону ОМСУ и МИНОБР", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 4, "Показатель": "Функционал учета тарификационных форм в части актуализации методики расчета тарификационных списков", "Ожидаемый эффект": "Поддержание в актуальном состоянии методики расчета в тарификационных списках", "Тип эффекта": "Поддержание актуальности", "Место в топе": null}, {"№ п/п": 5, "Показатель": "Функционал сбора контингента муниципальных организаций в части актуализации форм для сбора", "Ожидаемый эффект": "Поддержание в актуальном состоянии форм отчетности", "Тип эффекта": "Поддержание актуальности", "Место в топе": null}, {"№ п/п": 6, "Показатель": "Трансформационный проект: Цифровизация ГП", "Ожидаемый эффект": "1. Перестроение бизнес-процессов ведомств;\n2. Систематизация ГП( Финансирование, порядки, мероприятия);\n3. Сокращение трудозатрат всех подразделений инистерства, в среднем 260 часов в год;\n4. Сокращение редакций ГП с 2,5 до 1,5 (-37,5 %);\n5. Актуальный доступ структурным подразделениям к материалам ГП в реальном времени(сейчас отсуствует);\n6. Корректировка финансирования\\порядка с 3-4 мес до 5 дней;\n7. Обеспечить нахождение ведомства в «зеленой зоне» рейтинга эффективности.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": 2}, {"№ п/п": 7, "Показатель": "Функционал анализа сведений Тарификационных форм", "Ожидаемый эффект": "Сокращение времени на анализ тарификационных форм. Повышение качества принятия решений.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 8, "Показатель": "Реализация Дашборда Тарификация", "Ожидаемый эффект": "Сокращение времени на анализ тарификационных форм в 2 раза. Повышение качества принятия решений (до 1,5 раз снижение числа запросов от руководства к аналитикам)", "Тип эффекта": "Ускорение процессов", "Место в топе": 3}, {"№ п/п": 9, "Показатель": "Функционал анализа показателей заработной платы образовательных организаций в части разработки отчета ЗП- Образование (Краткий)", "Ожидаемый эффект": "Сокращение времени и трудозатрат на обработку и анализ данных (показателей, объемов и пр.)", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 10, "Показатель": "Реализация модели расчета прогнозов объемов финансирования", "Ожидаемый эффект": "1. Сокращение времени на планирование и анализ прогнозов объемов финансирования образовательных учреждений с 2-х часов до 10 минут.\n2. Увеличение точности прогнозов за счет добавления данных из внешних источников (Госуслуга, миграция населения и др) сейчас используется объемы финансирования за прошлые года в разрезе текущего года. Потенциал экономии бюджета.", "Тип эффекта": "Снижение нагрузки на персонал", "Место в топе": 4}, {"№ п/п": 11, "Показатель": "Функционал обращения пользователя к базе знаний", "Ожидаемый эффект": "Ускорение процесса адаптации новых сотрудников.  Потенциал сокращения времени обучения на 30-50% и до 40% обращений в поддержку", "Тип эффекта": "Ускорение процессов", "Место в топе": null}, {"№ п/п": 12, "Показатель": "Функционал: Реестр уточнений", "Ожидаемый эффект": "Сокращение времени на анализ истории уточнений", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 13, "Показатель": "Функционал анализа сведений Тарификационных форм в части добавления разрезов анализа", "Ожидаемый эффект": "Сокращение времени на анализ тарификационных форм. Повышение качества принятия решений.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}, {"№ п/п": 14, "Показатель": "Функционал: Интеграция с ЕЦИС МО (ЦБ МО)", "Ожидаемый эффект": "Автоматизация заполнения отчетных форм, экономия трудозатрат от 3336 до 4526 часов в год", "Тип эффекта": "Ускорение процессов", "Место в топе": null}, {"№ п/п": 15, "Показатель": "Функционал: Рабочее место аналитика", "Ожидаемый эффект": "Сокращение времени на обработку сбора показателей", "Тип эффекта": "", "Место в топе": null}, {"№ п/п": 16, "Показатель": "Функционал универсального сбора в части возможности подписания ЭП", "Ожидаемый эффект": "Повышение качества данных. Повышение качества принятия решений.", "Тип эффекта": "Повышение качества данных", "Место в топе": null}, {"№ п/п": 17, "Показатель": "Подключение ИИ ассистента для автоматического доступа к сведениям системы и анализа", "Ожидаемый эффект": "Сокращение трудозатрат до 764  часов в год за счет ИИ в сравнении с классическим обращением к отчетам (в расчете на 5 аналитиков)", "Тип эффекта": "Ускорение процессов", "Место в топе": 5}, {"№ п/п": 18, "Показатель": "Трансформационный проект: Реализация новой модели сбора и верификации контингента для расчета субвенции", "Ожидаемый эффект": "1. Актуальная обновленная информация в системах Моя школа и ЕИСДОУ. (Показатель отклонений от МШ и ЕИС ДОУ  до 1% к декабрю 2026)\n2. Повышение верификации данных для расчета субвенции на финансовое обеспечение дошкольного и общего образования. Экономия бюджета порядка 231 млн. руб. в год.\n3.Снижение ручного и двойного ввода информации. (от 4 378 до 6 880 часов в год, в среднем 5 629 часов)\n4. Снижение нагрузки на управления при контролировании предоставления информации.", "Тип эффекта": "Ускорение процессов", "Место в топе": 1}, {"№ п/п": 19, "Показатель": "Функционал: Интеграция с ГИС РЭБ", "Ожидаемый эффект": "Сокращение времени и трудозатрат на обмен данными. Сокращение времени и трудозатрат на сдачу отчетности.", "Тип эффекта": "Ускорение процессов", "Место в топе": null}, {"№ п/п": 20, "Показатель": "Функционал анализа контингента в части сравнения численности и объемов контингента и бюджета между собой", "Ожидаемый эффект": "Сокращение времени на анализ показателей численности. Повышение качества принятия решений.", "Тип эффекта": "Сокращение трудозатрат", "Место в топе": null}];
         let currentData = DEFAULT_DATA;
@@ -1600,7 +1671,7 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
                     });
                     if (data.length > 0) {
                         currentData = data;
-                        document.getElementById('dataSource').innerHTML = '📁 Загружен файл: ' + file.name + ' (' + data.length + ' записей)';
+                        document.getElementById('infoPopupText').textContent = '📁 Загружен: ' + file.name + ' (' + data.length + ' записей)';
                         renderDashboard(data);
                     } else {
                         alert('Файл загружен, но данные не распознаны. Проверьте формат CSV (разделитель «;»).');
@@ -1612,12 +1683,7 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
             reader.readAsText(file, 'windows-1251');
         });
 
-        document.getElementById('resetBtn').addEventListener('click', function() {
-            currentData = DEFAULT_DATA;
-            document.getElementById('dataSource').innerHTML = '📊 Используются встроенные данные из Plany-2026.csv';
-            document.getElementById('csvFile').value = '';
-            renderDashboard(DEFAULT_DATA);
-        });
+        /* resetBtn removed — gear icon triggers file input directly */
 
         document.addEventListener('DOMContentLoaded', function() {
             renderDashboard(DEFAULT_DATA);
