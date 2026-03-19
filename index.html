@@ -158,6 +158,12 @@
             background: #FF6B6B;
             color: white;
         }
+        .tab-link {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         .nav-btn {
             padding: 10px 24px;
@@ -1178,6 +1184,7 @@
     <div class="page-tabs">
         <button class="tab-btn active" onclick="showPage('dashboard')">📊 Дашборд эффектов</button>
         <button class="tab-btn" onclick="showPage('process')">🔄 Бизнес-процесс</button>
+        <a href="stats.html" class="tab-btn tab-link">📈 Статистика</a>
     </div>
 
     <div id="dashboard-page" class="page-content active">
