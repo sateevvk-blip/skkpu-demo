@@ -22,6 +22,9 @@ var PALETTE = [
   "#00bcd4","#f9ca24","#6ab04c","#eb4d4b","#686de0","#30336b"
 ];
 
+/* Track Chart.js instances for cleanup on refresh */
+var chartInstances = [];
+
 function animCounter(id, target, dur) {
   dur = dur || 1800;
   var el = document.getElementById(id);
@@ -36,7 +39,25 @@ function animCounter(id, target, dur) {
   requestAnimationFrame(step);
 }
 
-function initDashboard(raw) {
+function updatePeriodBadge(period) {
+  var badge = document.getElementById("periodBadge");
+  if (period && period.from && period.to) {
+    badge.innerHTML = 'Период: <strong>' + period.from + ' \u2013 ' + period.to + '</strong>';
+  }
+}
+
+function initDashboard(payload) {
+  /* Support both wrapped {period, users} and flat {user:data} formats */
+  var raw, period;
+  if (payload.users && payload.period) {
+    raw = payload.users;
+    period = payload.period;
+  } else {
+    raw = payload;
+    period = null;
+  }
+  if (period) updatePeriodBadge(period);
+
   var userDocs = {}, userSess = {}, docTotals = {};
 
   Object.keys(raw).forEach(function(u) {
@@ -79,7 +100,7 @@ function initDashboard(raw) {
     var g2 = ctx.createLinearGradient(0, 0, 500, 0);
     g2.addColorStop(0, "rgba(0,229,160,0.6)");
     g2.addColorStop(1, "rgba(123,97,255,0.4)");
-    new Chart(ctx, {
+    chartInstances.push(new Chart(ctx, {
       type: "bar",
       data: {
         labels: top20.map(function(e) { return e[0]; }),
@@ -100,7 +121,7 @@ function initDashboard(raw) {
           y: { grid: { color: gc }, ticks: { color: "rgba(232,234,240,0.75)", font: { size: 10 } } }
         }
       }
-    });
+    }));
   })();
 
   /* Doughnut chart: document types */
@@ -110,7 +131,7 @@ function initDashboard(raw) {
     var vals = keys.map(function(k) { return docTotals[k]; });
     var lbls = keys.map(function(k) { return docLabels[k] || k; });
     var total = vals.reduce(function(a, b) { return a + b; }, 0);
-    new Chart(ctx, {
+    chartInstances.push(new Chart(ctx, {
       type: "doughnut",
       data: {
         labels: lbls,
@@ -150,7 +171,7 @@ function initDashboard(raw) {
           ctx2.restore();
         }
       }]
-    });
+    }));
 
     var pillsEl = document.getElementById("pills");
     keys.forEach(function(k, i) {
@@ -185,7 +206,7 @@ function initDashboard(raw) {
     var g = ctx.createLinearGradient(0, 0, 0, 300);
     g.addColorStop(0, "rgba(123,97,255,0.85)");
     g.addColorStop(1, "rgba(0,198,255,0.45)");
-    new Chart(ctx, {
+    chartInstances.push(new Chart(ctx, {
       type: "bar",
       data: {
         labels: top25sess.map(function(e) { return e[0]; }),
@@ -203,14 +224,43 @@ function initDashboard(raw) {
           y: { grid: { color: gc }, ticks: { color: tc }, title: { display: true, text: "Сессий", color: tc } }
         }
       }
-    });
+    }));
   })();
+}
+
+/* ── Cleanup: destroy charts and clear dynamic content ── */
+
+function cleanupDashboard() {
+  chartInstances.forEach(function(chart) { chart.destroy(); });
+  chartInstances = [];
+  document.getElementById("pills").innerHTML = "";
+  document.getElementById("rankList").innerHTML = "";
+}
+
+/* ── Refresh: re-fetch data and rebuild ── */
+
+function refreshData() {
+  var btn = document.getElementById("refreshBtn");
+  btn.classList.add("spinning");
+  btn.disabled = true;
+
+  fetch("data/stats-data.json", { cache: "no-store" })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      cleanupDashboard();
+      initDashboard(data);
+    })
+    .catch(function(err) { console.error("Refresh failed:", err); })
+    .finally(function() {
+      btn.classList.remove("spinning");
+      btn.disabled = false;
+    });
 }
 
 /* ── Initialization: load data then render ── */
 
 window.addEventListener("load", function() {
-  fetch("data/stats-data.json")
+  fetch("data/stats-data.json", { cache: "no-store" })
     .then(function(response) { return response.json(); })
     .then(function(data) { initDashboard(data); })
     .catch(function(err) { console.error("Failed to load stats data:", err); });

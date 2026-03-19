@@ -25,7 +25,12 @@
       </div>
     </div>
   </div>
-  <div class="period-badge">Период: <strong>01.02.2026 – 31.03.2026</strong></div>
+  <div class="header-right">
+    <div class="period-badge" id="periodBadge">Период: <strong>загрузка…</strong></div>
+    <button class="refresh-btn" id="refreshBtn" title="Обновить данные" onclick="refreshData()">
+      <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.636-6.364" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v6h-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
 </header>
 
 <!-- KPI -->
